@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <None Remove="Handlers\" />
-    <None Remove="Controllers\" />
     <None Remove="Microsoft.EntityFrameworkCore" />
     <None Remove="Microsoft.EntityFrameworkCore.SqlServer" />
     <None Remove="AutoMapper" />
@@ -18,7 +17,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Handlers\" />
-    <Folder Include="Controllers\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.10" />
