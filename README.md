@@ -26,9 +26,10 @@ This API has the following criteria:
 
 
   
-## API Reference
+## API Documentation
 
 Swagger Doc is visual documentation for API, making it easy for back end implementation and client side consumption, you can open inside a browser at the following url -
+https://localhost:5017/swagger/index.html
 
 ## Tech Stack
 
