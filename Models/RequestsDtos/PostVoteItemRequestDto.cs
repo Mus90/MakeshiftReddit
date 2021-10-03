@@ -1,9 +1,10 @@
 ﻿using System;
 namespace MakeshiftReddit.Models.RequestsDtos
 {
-    public class CommentItemRequestDto
+    public class PostVoteItemRequestDto
     {
         public int PostId { get; set; }
-        public string Description { get; set; }
+        public int VoteValue { get; set; }
+
     }
 }

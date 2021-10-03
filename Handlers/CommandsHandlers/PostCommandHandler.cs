@@ -6,7 +6,7 @@ using MakeshiftReddit.Models.RequestsDtos;
 
 namespace MakeshiftReddit.Handlers.CommandsHandlers
 {
-    public class PostCommandHandler
+    public class PostCommandHandler : IPostCommandHandler
     {
 
         //Calling database Context
@@ -18,32 +18,57 @@ namespace MakeshiftReddit.Handlers.CommandsHandlers
             _context = context;
             _mapper = mapper;
         }
-       //CreatePostHandler
-       public async Task CreatePostHandler(PostItemRequestDto input)
+        //CreatePostHandler
+        public async Task<bool> CreatePostHandler(CreatePostItemRequestDto input,string Username)
         {
-            var list = _mapper.Map<Post>(input);
-            await _context.Posts.AddAsync(list);
-            _context.SaveChanges();
+            try
+            {
+                var post = _mapper.Map<Post>(input);
+                post.UserName = Username;
+                await _context.Posts.AddAsync(post);
+                _context.SaveChanges();
+                return true;
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+
         }
 
         // DeletePostHandler
-        public async Task DeletePostHandler (PostItemRequestDto input)
+        public async Task<bool> DeletePostHandler(int ID)
         {
-            var list = _mapper.Map<Post>(input);
-            await _context.Posts.FindAsync(list.ID);
-            if (list == null)
+            try
             {
-                throw new Exception("Could not find Post");
+                var post = await _context.Posts.FindAsync(ID);
+                _context.Remove(post);
+                _context.SaveChanges();
+                return true;
             }
-            _context.Remove(list);
+            catch
+            {
+                return false;
+            }
+
+
         }
 
         // UpdatePostHandler
-        public void  UpdatePostHandler(PostItemRequestDto input)
+        public bool UpdatePostHandler(UpdatePostItemRequestDto input)
         {
-            var list = _mapper.Map<Post>(input);
-            _context.Posts.Update(list);
-            _context.SaveChanges();
+            try
+            {
+                var list = _mapper.Map<Post>(input);
+                _context.Posts.Update(list);
+                _context.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
         }
     }
 }

@@ -6,7 +6,7 @@ using MakeshiftReddit.Models.RequestsDtos;
 
 namespace MakeshiftReddit.Handlers.CommandsHandlers
 {
-    public class CommentsCommandHandler
+    public class CommentsCommandHandler : ICommentsCommandHandler
     {
 
         //Calling database Context
@@ -20,30 +20,59 @@ namespace MakeshiftReddit.Handlers.CommandsHandlers
         }
         // CreateCommentHandler
 
-        public async Task CreateCommentHandler(CommentItemRequestDto input)
+        public async Task<bool> CreateCommentHandler(CommentItemRequestDto input,string UserName)
         {
-            var list = _mapper.Map<Comment>(input);
-            await _context.Comments.AddAsync(list);
-            _context.SaveChanges();
+            try
+            {
+                var comment = _mapper.Map<Comment>(input);
+                comment.UserName = UserName;
+                await _context.Comments.AddAsync(comment);
+
+                _context.SaveChanges();
+                return true;
+
+            }
+            catch
+            {
+                return false;
+            }
+
         }
         //DeleteCommentHandler
-        public async Task DeleteCommentHandler(CommentItemRequestDto input)
+        public async Task<bool> DeleteCommentHandler(int ID)
         {
-            var list = _mapper.Map<Comment>(input);
-            await _context.Comments.FindAsync(list.ID);
-            if (list == null)
+            try
             {
-                throw new Exception("Couldn't find Comment");
+                var comment = await _context.Comments.FindAsync(ID);
+                _context.Remove(comment);
+                _context.SaveChanges();
+                return true;
+
             }
-            _context.Remove(list);
+            catch
+            {
+                return false;
+            }
+
         }
 
         //UpdateCommentHandler
-        public void UpdateCommentHandler(PostItemRequestDto input)
+        public async Task<bool> UpdateCommentHandler(CommentItemRequestDto input)
         {
-            var list = _mapper.Map<Comment>(input);
-            _context.Comments.Update(list);
-            _context.SaveChanges();
+            try
+            {
+                var comment = _mapper.Map<Comment>(input);
+                _context.Comments.Update(comment);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
+
+
         }
     }
 }

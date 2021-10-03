@@ -1,9 +1,9 @@
 ﻿using System;
 namespace MakeshiftReddit.Models.RequestsDtos
 {
-    public class CommentItemRequestDto
+    public class CreatePostItemRequestDto
     {
-        public int PostId { get; set; }
+        
         public string Description { get; set; }
     }
 }
